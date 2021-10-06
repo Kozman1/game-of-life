@@ -1,7 +1,9 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const dpi = window.devicePixelRatio;
-let cellNumber = 60
+
+// sets number of cells horizontally
+let cellNumber = 60;
 
 
 function drawGrid() {
@@ -14,25 +16,32 @@ function drawGrid() {
 
     for(let i = 0; i <= cellNumber; i++) {
         let x = cellSize * i;
-        let y = cellSize * i;
+        
+
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, screenHeight);
         ctx.stroke();
-        ctx.closePath();
+        ctx.closePath();    
+    }
+
+
+    for(let i = 0; i * cellSize <= screenHeight; i++) {
+        let y = cellSize * i;
 
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(screenWidth, y);
         ctx.stroke();
         ctx.closePath();
-        
     }
+
 
 }
 
 function drawCell() {
-
+    ctx.fillStyle;
+    ctx.fillRect()
 }
 
 function fixDPI() {
