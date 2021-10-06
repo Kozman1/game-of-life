@@ -5,6 +5,7 @@ const dpi = window.devicePixelRatio;
 // sets number of cells horizontally
 let cellNumber = 50;
 let cellColor = 'black';
+let cellMatrix = [];
 const screenWidth = window.innerWidth * dpi;
 const screenHeight = window.innerHeight * dpi;
 const cellSize = screenWidth / cellNumber;
@@ -73,14 +74,36 @@ function fixDPI() {
     canvas.setAttribute('height', style.height * dpi);
 }
 
-
 function draw() {
     fixDPI();
     drawGrid();
 }
 
+function createCellMatrix() {
+    for(let i = 0; i * cellSize <= screenHeight; i++) {
+        cellMatrix[i] = [];  
+        for(let k = 0; k <= cellNumber; k++) {
+            cellMatrix[i][k] = {
+                x: k,
+                y: i
+            };
+        }
+    }
+
+}
+
+
+// function getCellNeighbours(x, y) {
+//     let neighbour1 = cellMatrix[y][x]
+// }
+
 requestAnimationFrame(draw);
 
 
 
+[
+    [1, 3, 5],
+    [1, 3, 5],
+    [1, 3, 5],
+]
 
