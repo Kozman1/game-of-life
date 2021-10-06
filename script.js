@@ -3,28 +3,25 @@ const ctx = canvas.getContext('2d');
 const dpi = window.devicePixelRatio;
 
 // sets number of cells horizontally
-let cellNumber = 60;
+let cellNumber = 50;
+const screenWidth = window.innerWidth * dpi;
+const screenHeight = window.innerHeight * dpi;
+const cellSize = screenWidth / cellNumber;
 
 
 function drawGrid() {
-    const screenWidth = window.innerWidth * dpi;
-    const screenHeight = window.innerHeight * dpi;
-    const cellSize = screenWidth / cellNumber;
-    
     ctx.strokeStyle = 'rgb(0, 0, 0)';
     ctx.lineWidth = 1;
 
     for(let i = 0; i <= cellNumber; i++) {
         let x = cellSize * i;
         
-
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, screenHeight);
         ctx.stroke();
         ctx.closePath();    
     }
-
 
     for(let i = 0; i * cellSize <= screenHeight; i++) {
         let y = cellSize * i;
@@ -35,13 +32,12 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
     }
-
-
 }
 
-function drawCell() {
-    ctx.fillStyle;
-    ctx.fillRect()
+function drawCell(cellColumn, cellRow) {
+    
+    ctx.fillStyle = 'black';
+    ctx.fillRect(cellColumn * cellSize)
 }
 
 function fixDPI() {
