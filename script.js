@@ -1,18 +1,18 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const dpi = window.devicePixelRatio;
+let cellNumber = 60
 
 
-
-function drawGrid(cellNumber) {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+function drawGrid() {
+    const screenWidth = window.innerWidth * dpi;
+    const screenHeight = window.innerHeight * dpi;
     const cellSize = screenWidth / cellNumber;
     
     ctx.strokeStyle = 'rgb(0, 0, 0)';
     ctx.lineWidth = 1;
 
-    for(let i = 0; i < cellNumber; i++) {
+    for(let i = 0; i <= cellNumber; i++) {
         let x = cellSize * i;
         let y = cellSize * i;
         ctx.beginPath();
@@ -28,6 +28,10 @@ function drawGrid(cellNumber) {
         ctx.closePath();
         
     }
+
+}
+
+function drawCell() {
 
 }
 
@@ -50,7 +54,7 @@ function fixDPI() {
 
 function draw() {
     fixDPI();
-    drawGrid(60);
+    drawGrid();
 }
 
 requestAnimationFrame(draw);
