@@ -4,6 +4,7 @@ const dpi = window.devicePixelRatio;
 
 // sets number of cells horizontally
 let cellNumber = 50;
+let cellColor = 'black';
 const screenWidth = window.innerWidth * dpi;
 const screenHeight = window.innerHeight * dpi;
 const cellSize = screenWidth / cellNumber;
@@ -34,10 +35,26 @@ function drawGrid() {
     }
 }
 
+// most left top cell is on (0, 0)
 function drawCell(cellColumn, cellRow) {
-    
-    ctx.fillStyle = 'black';
-    ctx.fillRect(cellColumn * cellSize)
+    ctx.fillStyle = cellColor;
+    ctx.fillRect(
+        // -2/1 offset to compensate border
+        cellColumn * cellSize + 1, 
+        cellRow * cellSize + 1, 
+        cellSize - 2,
+        cellSize - 2
+    );
+}
+
+function clearCell(cellColumn, cellRow) {
+    ctx.clearRect(
+        // -2/1 offset to compensate border
+        cellColumn * cellSize + 1, 
+        cellRow * cellSize + 1, 
+        cellSize - 2,
+        cellSize - 2 
+    );
 }
 
 function fixDPI() {
