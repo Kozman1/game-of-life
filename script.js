@@ -48,7 +48,12 @@ function fixDPI() {
 }
 
 
+function draw() {
+    fixDPI();
+    drawGrid(60);
+}
 
+requestAnimationFrame(draw);
 
 
 
