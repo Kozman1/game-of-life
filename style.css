@@ -7,3 +7,28 @@ body {
     width: 100vw;
     margin: 0px;
 }
+
+#interface {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    right: 0;
+    left: auto;
+    background-color: rgba(50, 45, 45, 0.36);
+}
+
+.input-wrapper {
+    display: flex;
+    justify-content: right;
+    margin: 10px;
+}
+
+.interface-input {
+    height: 25px;
+    width: 150px;
+    margin-left: 10px;
+    border: none;
+}

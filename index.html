@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
+    <div id="interface">
+        <div class="input-wrapper">
+            <label for="cell-size">Cell Size</label>
+            <input oninput="() => window.cellSize = this.value" type="number" name="cell-size" class="interface-input">
+        </div>
+
+        <div class="input-wrapper">
+            <label for="cell-color">Cell Color</label>
+            <input oninput="() => window.cellColor = this.value" type="color" name="cell-color" class="interface-input">
+        </div>
+
+        <div class="input-wrapper">
+            <label for="tick">Iteration Time</label>
+            <input oninput="() => window.tick = this.value" type="number" name="tick" class="interface-input">
+        </div>
+        
+        <div class="input-wrapper">
+            <button onclick="run()">Run</button>
+            <button onclick="window.location.reload()">Break</button>
+        </div>
+    </div>
     <canvas id="canvas" >
 
     </canvas>
