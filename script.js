@@ -84,6 +84,7 @@ function createCellMatrix() {
         cellMatrix[i] = [];  
         for(let k = 0; k <= cellNumber; k++) {
             cellMatrix[i][k] = {
+                isPopulated: false,
                 x: k,
                 y: i
             };
@@ -110,6 +111,15 @@ function getCellNeighbours(x, y) {
         return cellMatrix[y][x];
     }
 }
+
+window.addEventListener('click', (e) => {
+    let x = e.clientX,
+        y = e.clientY,
+        c = Math.trunc(x * dpi / cellSize),
+        r = Math.trunc(y * dpi / cellSize);
+    drawCell(c, r);
+}); 
+
 
 
 
