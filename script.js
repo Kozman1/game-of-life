@@ -94,16 +94,27 @@ function createCellMatrix() {
 }
 
 function getCellNeighbours(x, y) {
-    return {
-        topLeft: getCell(y - 1, x - 1),
-        top: getCell(y - 1, x),
-        topRight: getCell(y - 1, x + 1),
-        left: getCell(y, x - 1),
-        right: getCell(y, x + 1),
-        bottomLeft: getCell(y + 1, x -1),
-        bottom: getCell(y + 1, x),
-        bottomRight: getCell(y + 1, x + 1)
-    }
+    return [
+        getCell(y - 1, x - 1),
+        getCell(y - 1, x),
+        getCell(y - 1, x + 1),
+        getCell(y, x - 1),
+        getCell(y, x + 1),
+        getCell(y + 1, x -1),
+        getCell(y + 1, x),
+        getCell(y + 1, x + 1) 
+    ].filter(cell => { return cell });
+    
+    // return {
+    //     topLeft: getCell(y - 1, x - 1),
+    //     top: getCell(y - 1, x),
+    //     topRight: getCell(y - 1, x + 1),
+    //     left: getCell(y, x - 1),
+    //     right: getCell(y, x + 1),
+    //     bottomLeft: getCell(y + 1, x -1),
+    //     bottom: getCell(y + 1, x),
+    //     bottomRight: getCell(y + 1, x + 1)
+    // }
 
     function getCell(x, y) {
         if (!cellMatrix[y]) return null;
@@ -117,19 +128,28 @@ window.addEventListener('click', (e) => {
         y = e.clientY,
         c = Math.trunc(x * dpi / cellSize),
         r = Math.trunc(y * dpi / cellSize);
-    drawCell(c, r);
+    if(cellMatrix[c][r].isPopulated) {
+        clearCell(c, r);
+        cellMatrix[c][r].isPopulated = false;
+    }
+    else {
+        drawCell(c, r);
+        cellMatrix[c][r].isPopulated = true;
+    }
 }); 
 
 
-
+// function evalGeneration() {
+//     for(i = 0; i < cellMatrix.length; i++) {
+//         for(k = 0; k < cellMatrix[i].length; k++) {
+//             let cell = cellMatrix[i][k];
+//             let nhgb = getCellNeighbours(cell.x, cell.y);
+//             if(nhgb.length === 2 || nhgb.length === 3) cell.isPopulated = true;
+//             if(nhgb.length < 2 || nhgb.length > 3) cell.isPopulated = false;
+//         }
+//     }
+// }
 
 requestAnimationFrame(draw);
 createCellMatrix();
-
-
-[
-    [1, 3, 5],
-    [1, 3, 5],
-    [1, 3, 5],
-]
 
