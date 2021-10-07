@@ -92,13 +92,29 @@ function createCellMatrix() {
 
 }
 
+function getCellNeighbours(x, y) {
+    return {
+        topLeft: getCell(y - 1, x - 1),
+        top: getCell(y - 1, x),
+        topRight: getCell(y - 1, x + 1),
+        left: getCell(y, x - 1),
+        right: getCell(y, x + 1),
+        bottomLeft: getCell(y + 1, x -1),
+        bottom: getCell(y + 1, x),
+        bottomRight: getCell(y + 1, x + 1)
+    }
 
-// function getCellNeighbours(x, y) {
-//     let neighbour1 = cellMatrix[y][x]
-// }
+    function getCell(x, y) {
+        if (!cellMatrix[y]) return null;
+        if (!cellMatrix[y][x]) return null;
+        return cellMatrix[y][x];
+    }
+}
+
+
 
 requestAnimationFrame(draw);
-
+createCellMatrix();
 
 
 [
