@@ -1,9 +1,10 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const dpi = window.devicePixelRatio;
+let isRunning = false;
 
 // sets number of cells horizontally
-let cellNumber = 50;
+let cellNumber = 40;
 let cellColor = 'black';
 let cellMatrix = [];
 const screenWidth = window.innerWidth * dpi;
@@ -104,17 +105,6 @@ function getCellNeighbours(x, y) {
         getCell(y + 1, x),
         getCell(y + 1, x + 1) 
     ].filter(cell => { return cell });
-    
-    // return {
-    //     topLeft: getCell(y - 1, x - 1),
-    //     top: getCell(y - 1, x),
-    //     topRight: getCell(y - 1, x + 1),
-    //     left: getCell(y, x - 1),
-    //     right: getCell(y, x + 1),
-    //     bottomLeft: getCell(y + 1, x -1),
-    //     bottom: getCell(y + 1, x),
-    //     bottomRight: getCell(y + 1, x + 1)
-    // }
 
     function getCell(x, y) {
         if (!cellMatrix[y]) return null;
@@ -128,28 +118,48 @@ window.addEventListener('click', (e) => {
         y = e.clientY,
         c = Math.trunc(x * dpi / cellSize),
         r = Math.trunc(y * dpi / cellSize);
-    if(cellMatrix[c][r].isPopulated) {
+        console.log(c, cellMatrix[c])
+    if(cellMatrix[r][c].isPopulated) {
         clearCell(c, r);
-        cellMatrix[c][r].isPopulated = false;
+        cellMatrix[r][c].isPopulated = false;
     }
     else {
         drawCell(c, r);
-        cellMatrix[c][r].isPopulated = true;
+        cellMatrix[r][c].isPopulated = true;
     }
 }); 
 
 
-// function evalGeneration() {
-//     for(i = 0; i < cellMatrix.length; i++) {
-//         for(k = 0; k < cellMatrix[i].length; k++) {
-//             let cell = cellMatrix[i][k];
-//             let nhgb = getCellNeighbours(cell.x, cell.y);
-//             if(nhgb.length === 2 || nhgb.length === 3) cell.isPopulated = true;
-//             if(nhgb.length < 2 || nhgb.length > 3) cell.isPopulated = false;
-//         }
-//     }
-// }
+function evalGeneration() {
+    console.log('started');
+    for(i = 0; i < cellMatrix.length; i++) {
+        for(k = 0; k < cellMatrix[i].length; k++) {
+            let cell = cellMatrix[i][k];
+            let populated = getCellNeighbours(cell.x, cell.y).filter(cell => cell.isPopulated);
+            if(populated.length === 2 || populated.length === 3) {
+                drawCell(i, k);
+                cell.isPopulated = true;
+            }
+            else {
+                clearCell(i, k);
+                cell.isPopulated = false;
+            }
+        }
+    }
+}
+
 
 requestAnimationFrame(draw);
 createCellMatrix();
 
+(async () => {
+    while(false) {
+        await timeout(700);
+        evalGeneration();
+    }
+})();
+
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
