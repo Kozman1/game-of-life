@@ -75,19 +75,15 @@ function fixDPI() {
     canvas.setAttribute('height', style.height * dpi);
 }
 
-function draw() {
-    fixDPI();
-    drawGrid();
-}
-
 function createCellMatrix() {
-    for(let i = 0; i * cellSize <= screenHeight; i++) {
-        cellMatrix[i] = [];  
-        for(let k = 0; k <= cellNumber; k++) {
-            cellMatrix[i][k] = {
+    for(let y = 0; y * cellSize <= screenHeight; y++) {
+        cellMatrix[y] = [];  
+        for(let x = 0; x <= cellNumber; x++) {
+            cellMatrix[y][x] = {
                 isPopulated: false,
-                x: k,
-                y: i
+                populatedNextTick: false,
+                x: x,
+                y: y
             };
         }
     }
@@ -96,14 +92,14 @@ function createCellMatrix() {
 
 function getCellNeighbours(x, y) {
     return [
-        getCell(y - 1, x - 1),
-        getCell(y - 1, x),
-        getCell(y - 1, x + 1),
-        getCell(y, x - 1),
-        getCell(y, x + 1),
-        getCell(y + 1, x -1),
-        getCell(y + 1, x),
-        getCell(y + 1, x + 1) 
+        getCell(x - 1, y - 1),
+        getCell(x, y - 1),
+        getCell(x + 1, y - 1),
+        getCell(x - 1, y),
+        getCell(x + 1, y),
+        getCell(x - 1, y + 1),
+        getCell(x, y + 1),
+        getCell(x + 1, y + 1) 
     ].filter(cell => { return cell });
 
     function getCell(x, y) {
@@ -118,10 +114,10 @@ window.addEventListener('click', (e) => {
         y = e.clientY,
         c = Math.trunc(x * dpi / cellSize),
         r = Math.trunc(y * dpi / cellSize);
-        console.log(c, cellMatrix[c])
     if(cellMatrix[r][c].isPopulated) {
         clearCell(c, r);
         cellMatrix[r][c].isPopulated = false;
+
     }
     else {
         drawCell(c, r);
@@ -131,33 +127,52 @@ window.addEventListener('click', (e) => {
 
 
 function evalGeneration() {
-    console.log('started');
-    for(i = 0; i < cellMatrix.length; i++) {
-        for(k = 0; k < cellMatrix[i].length; k++) {
-            let cell = cellMatrix[i][k];
-            let populated = getCellNeighbours(cell.x, cell.y).filter(cell => cell.isPopulated);
+    for(let y = 0; y < cellMatrix.length; y++) {
+        for(let x = 0; x < cellMatrix[y].length; x++) {
+            let cell = cellMatrix[y][x];
+            let populated = getCellNeighbours(x, y).filter(neighbour => neighbour.isPopulated);
+            
             if(populated.length === 2 || populated.length === 3) {
-                drawCell(i, k);
+                drawCell(x, y);
+                cell.populatedNextTick = true;
+            }
+            else {
+                clearCell(x, y);
+                cell.populatedNextTick = false;
+            }
+        }
+    }
+
+    for(y = 0; y < cellMatrix.length; y++) {
+        for(x = 0; x < cellMatrix[y].length; x++) {
+            let cell = cellMatrix[y][x];
+            let populated = getCellNeighbours(x, y).filter(cell => cell.populatedNextTick);
+
+            if(populated.length === 2 || populated.length === 3) {
                 cell.isPopulated = true;
             }
             else {
-                clearCell(i, k);
                 cell.isPopulated = false;
             }
         }
     }
 }
 
+function draw() {
+    fixDPI();
+    drawGrid();
+}
+
 
 requestAnimationFrame(draw);
 createCellMatrix();
 
-(async () => {
-    while(false) {
-        await timeout(700);
+async function run() {
+    while(true) {
+        await timeout(1000);
         evalGeneration();
     }
-})();
+}
 
 
 function timeout(ms) {
