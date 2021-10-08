@@ -1,14 +1,16 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const dpi = window.devicePixelRatio;
-let isRunning = false;
-
-// sets number of cells horizontally
-let cellNumber = 40;
-let cellColor = 'black';
-let cellMatrix = [];
 const screenWidth = window.innerWidth * dpi;
 const screenHeight = window.innerHeight * dpi;
+
+
+// sets number of cells horizontally
+window.cellNumber = 50;
+window.cellColor = 'black';
+window.tick = 150; 
+let cellMatrix = [];
+
 const cellSize = screenWidth / cellNumber;
 
 
@@ -106,7 +108,7 @@ function getCellNeighbours(x, y) {
     }
 }
 
-window.addEventListener('click', (e) => {
+canvas.addEventListener('click', (e) => {
     let x = e.clientX,
         y = e.clientY,
         c = Math.trunc(x * dpi / cellSize),
@@ -162,7 +164,7 @@ createCellMatrix();
 
 async function run() {
     while(true) {
-        await timeout(700);
+        await timeout(tick);
         evalGeneration();
     }
 }
