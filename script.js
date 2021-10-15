@@ -102,6 +102,10 @@ function getCellNeighbours(x, y) {
     ].filter(cell => { return cell });
 
     function getCell(x, y) {
+        if (y < 0) y = cellMatrix.length - 1;
+        if (y > cellMatrix.length - 1) y = 0;
+        if (x < 0) x = cellMatrix[y].length - 1;
+        if (x > cellMatrix[y].length) x = 0;
         if (!cellMatrix[y]) return null;
         if (!cellMatrix[y][x]) return null;
         return cellMatrix[y][x];
